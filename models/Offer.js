@@ -21,7 +21,7 @@ const Offer = mongoose.model("Offer", {
     type: Date,
     default: Date.now,
   },
-  picture: {
+  pictures: {
     type: Array,
   },
   creator: {

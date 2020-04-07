@@ -30,6 +30,7 @@ router.post("/offer/upload", isAuthenticated, async (req, res) => {
       description: req.fields.description,
       price: req.fields.price,
       creator: req.user,
+      pictures: req.pictures,
     });
 
     await newOffer.save();
