@@ -67,8 +67,8 @@ router.get("/offers/with-count", async (req, res) => {
     }
     // or as database/offers/with-count?skip=6&limit=3
     if (req.query.limit && req.query.skip) {
-      const limit = req.query.limit;
-      const skip = req.query.skip;
+      const limit = Number(req.query.limit);
+      const skip = Number(req.query.skip);
       search.limit(limit).skip(skip);
     }
 
