@@ -30,7 +30,6 @@ router.post("/offer/upload", isAuthenticated, async (req, res) => {
       description: req.fields.description,
       price: req.fields.price,
       creator: req.user,
-      pictures: req.pictures,
     });
 
     await newOffer.save();
@@ -60,10 +59,17 @@ router.get("/offers/with-count", async (req, res) => {
     else if (req.query.sort === "date-desc") search.sort({ created: -1 });
 
     //pagination
+    // as database/offers/with-count?page=2
     if (req.query.page) {
       const limit = 7;
       const page = req.query.page;
       search.limit(limit).skip(limit * (page - 1));
+    }
+    // or as database/offers/with-count?skip=6&limit=3
+    if (req.query.limit && req.query.skip) {
+      const limit = req.query.limit;
+      const skip = req.query.skip;
+      search.limit(limit).skip(skip);
     }
 
     //result
