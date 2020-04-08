@@ -78,7 +78,7 @@ router.get("/offers/with-count", async (req, res) => {
       select: "account",
     });
     res.json({
-      count: offers.count,
+      count: offers.length,
       offers: offers,
     });
   } catch (error) {
