@@ -58,6 +58,8 @@ router.get("/offers/with-count", async (req, res) => {
     if (req.query.sort === "date-asc") search.sort({ created: 1 });
     else if (req.query.sort === "date-desc") search.sort({ created: -1 });
 
+    const totalOffers = search.length;
+
     //pagination
     // as database/offers/with-count?page=2
     if (req.query.page & req.query.limit) {
@@ -78,7 +80,7 @@ router.get("/offers/with-count", async (req, res) => {
       select: "account",
     });
     res.json({
-      count: offers.length,
+      count: totalOffers,
       offers: offers,
     });
   } catch (error) {
