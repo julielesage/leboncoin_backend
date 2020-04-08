@@ -50,7 +50,7 @@ router.get("/offers/with-count", async (req, res) => {
   try {
     const filters = createFilters(req);
     //filtered search :
-    const search = await Offer.find(filters);
+    const search = Offer.find(filters);
     //sorted search by price
     if (req.query.sort === "price-asc") search.sort({ price: 1 });
     else if (req.query.sort === "price-desc") search.sort({ price: -1 });
@@ -58,9 +58,7 @@ router.get("/offers/with-count", async (req, res) => {
     if (req.query.sort === "date-asc") search.sort({ created: 1 });
     else if (req.query.sort === "date-desc") search.sort({ created: -1 });
 
-    const totalOffers = search.length;
-
-    //pagination
+    //pagination but pb if limit , offers count do change ...
     // as database/offers/with-count?page=2
     if (req.query.page & req.query.limit) {
       const limit = Number(req.query.limit);
@@ -80,7 +78,7 @@ router.get("/offers/with-count", async (req, res) => {
       select: "account",
     });
     res.json({
-      count: totalOffers,
+      count: offers.count,
       offers: offers,
     });
   } catch (error) {
