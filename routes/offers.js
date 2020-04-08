@@ -60,8 +60,8 @@ router.get("/offers/with-count", async (req, res) => {
 
     //pagination
     // as database/offers/with-count?page=2
-    if (req.query.page) {
-      const limit = 7;
+    if (req.query.page & req.query.limit) {
+      const limit = req.query.limit;
       const page = req.query.page;
       search.limit(limit).skip(limit * (page - 1));
     }
