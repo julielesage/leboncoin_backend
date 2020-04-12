@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Offer = require("../models/Offer");
 const isAuthenticated = require("../middleware/isAuthenticated");
+const cloudinary = require("cloudinary");
+
+cloudinary.config({
+  cloud_name: "dqausabxf",
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 //this function creates filters object, will be used later
 const createFilters = (req) => {
@@ -31,6 +38,7 @@ router.post("/offer/upload", isAuthenticated, async (req, res) => {
         async (error, result) => {
           if (error) return res.json({ error: error.message });
           else {
+            console.log("title req==>", req.fields.title);
             const newOffer = new Offer({
               title: req.fields.title,
               description: req.fields.description,
@@ -39,12 +47,13 @@ router.post("/offer/upload", isAuthenticated, async (req, res) => {
               pictures: result,
             });
             await newOffer.save();
-            const res = await Offer.find({ _id: newOffer._id }).populate({
+            const boomerang = await Offer.find({ _id: newOffer._id }).populate({
               path: "creator",
               select: "_id",
               select: "account.username",
             });
-            res.json(res);
+            console.log("boomerang ==>", boomerang);
+            res.json(boomerang);
           }
         }
       );
@@ -83,7 +92,7 @@ router.get("/offers/with-count", async (req, res) => {
     }
 
     //result
-    const offers = await search.populate({
+    const offers = await search.reverse.populate({
       path: "creator",
       select: "account",
     });

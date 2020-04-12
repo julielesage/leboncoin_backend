@@ -2,14 +2,18 @@ const User = require("../models/User");
 
 const isAuthenticated = async (req, res, next) => {
   try {
-    if (!req.headers.authorization)
-      return res.status(401).json({ error: "Unauthorized" });
-    else {
+    if (!req.headers.authorization) {
+      console.log("no header");
+      return res.status(401).json({ error: "no headers authorization" });
+    } else {
       const user = await User.findOne({
-        token: req.headers.authorization.replace("Bearer", ""),
+        token: req.headers.authorization.replace("Bearer ", ""),
       });
       if (!user) {
-        return res.status(401).json({ error: "Unauthorized" });
+        console.log("no user");
+        return res
+          .status(401)
+          .json({ error: "Unauthorized(there is no such user)" });
       } else {
         //create user key, to then get it in the route
         req.user = user;
