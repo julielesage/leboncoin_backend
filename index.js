@@ -3,6 +3,7 @@ const express = require("express");
 const formidableMiddleware = require("express-formidable");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cloudinary = require("cloudinary");
 
 const server = express();
 server.use(formidableMiddleware());
@@ -13,6 +14,12 @@ mongoose.connect(process.env.MONGODB_URI, {
   useCreateIndex: true,
 });
 server.use(cors());
+
+cloudinary.config({
+  cloud_name: "dqausabxf",
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
 
 server.get("/", function (req, res) {
   res.send("Welcome to the leboncoin API.");

@@ -25,20 +25,30 @@ const createFilters = (req) => {
 
 router.post("/offer/upload", isAuthenticated, async (req, res) => {
   try {
-    const newOffer = new Offer({
-      title: req.fields.title,
-      description: req.fields.description,
-      price: req.fields.price,
-      creator: req.user,
-    });
-
-    await newOffer.save();
-    const result = await Offer.find({ _id: newOffer._id }).populate({
-      path: "creator",
-      select: "_id",
-      select: "account.username",
-    });
-    res.json(result);
+    if (Object.keys(req.files).length > 0) {
+      cloudinary.v2.uploader.upload(
+        req.files.file.path,
+        async (error, result) => {
+          if (error) return res.json({ error: error.message });
+          else {
+            const newOffer = new Offer({
+              title: req.fields.title,
+              description: req.fields.description,
+              price: req.fields.price,
+              creator: req.user,
+              pictures: result,
+            });
+            await newOffer.save();
+            const res = await Offer.find({ _id: newOffer._id }).populate({
+              path: "creator",
+              select: "_id",
+              select: "account.username",
+            });
+            res.json(res);
+          }
+        }
+      );
+    }
   } catch (error) {
     res.json({ error: error.message });
   }
@@ -92,7 +102,7 @@ router.get("/offer/:id", async (req, res) => {
   try {
     if (!req.params.id) res.status(400).send({ message: "missing id" });
     else {
-      const offerToGet = await (await Offer.findById(req.params.id)).populated(
+      const offerToGet = await (await Offer.findById(req.params.id)).populate(
         "creator",
         "account"
       );
