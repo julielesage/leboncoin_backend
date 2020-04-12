@@ -52,7 +52,6 @@ router.post("/offer/upload", isAuthenticated, async (req, res) => {
               select: "_id",
               select: "account.username",
             });
-            console.log("boomerang ==>", boomerang);
             res.json(boomerang);
           }
         }
@@ -112,10 +111,11 @@ router.get("/offer/:id", async (req, res) => {
   try {
     if (!req.params.id) res.status(400).send({ message: "missing id" });
     else {
-      const offerToGet = await (await Offer.findById(req.params.id)).populate(
-        "creator",
-        "account"
-      );
+      const offerToGet = await Offer.findById(req.params.id).populate({
+        path: "creator",
+        select: "account",
+      });
+      console.log(offerToGet);
       res.json(offerToGet);
     }
   } catch (error) {
