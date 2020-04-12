@@ -92,10 +92,11 @@ router.get("/offers/with-count", async (req, res) => {
     }
 
     //result
-    const offers = await search.reverse.populate({
+    const offers = await search.populate({
       path: "creator",
       select: "account",
     });
+    offers.reverse();
     res.json({
       count: offers.length,
       offers: offers,
