@@ -4,11 +4,12 @@ const formidableMiddleware = require("express-formidable");
 router.use(formidableMiddleware());
 
 const createStripe = require("stripe");
-const stripe = createStripe(process.env.TRIPE_KEY);
+const stripe = createStripe(process.env.STRIPE_KEY);
 
 router.post("/payment", async (req, res) => {
   try {
     //sending amount (in cents !) and token to stripe
+    console.log(req);
     const { status } = await stripe.charges.create({
       amount: req.fields.amount,
       currency: "eur",

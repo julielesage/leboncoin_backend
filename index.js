@@ -22,6 +22,8 @@ const usersRoutes = require("./routes/users.js");
 server.use(usersRoutes);
 const offersRoutes = require("./routes/offers.js");
 server.use(offersRoutes);
+const paymentRoutes = require("./routes/payment.js");
+server.use(paymentRoutes);
 
 // for wrong path request :
 server.all("*", function (req, res) {
