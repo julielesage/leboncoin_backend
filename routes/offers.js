@@ -115,7 +115,7 @@ router.get("/offer/:id", async (req, res) => {
         path: "creator",
         select: "account",
       });
-      console.log(offerToGet);
+
       res.json(offerToGet);
     }
   } catch (error) {
