@@ -1,5 +1,11 @@
 # leboncoin
 
+<img src="https://j.gifs.com/xnwR7l.gif" width="100%" />
+
+## Corresponding front :
+github : https://github.com/julielesage/leboncoin_frontend/.  
+web : https://nifty-poitras-6bd5ed.netlify.com/
+
 ## CRUD
 
 OFFERS
@@ -13,8 +19,10 @@ USERS
 
 Sign Up.  
 Sign In.  
-Upload Pictures.
+
+PAYMENT
+AUTHENTICATION MIDDLEWARE
 
 ## TECHNOS
 
-Express / node.js / CRUD / Cloudinary /
+Express / node.js / CRUD / Cloudinary / Stripe
